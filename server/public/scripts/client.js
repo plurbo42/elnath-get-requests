@@ -3,7 +3,6 @@ console.log('client.js has been loaded')
 $(document).ready(function () {
     console.log('jquery has been loaded');
 
-
     $.ajax({
         method: 'GET',
         url: '/quote/random',
@@ -13,7 +12,6 @@ $(document).ready(function () {
             // error: function (error) {
             //     console.log('There was an error retrieving a quote from the server')
             // }
-
         }
     })
     getAllQuotes();
@@ -22,7 +20,7 @@ $(document).ready(function () {
         $.ajax({
             method: 'POST',
             url: '/quote/new',
-            data: { quote_to_add: $('#newQuoteIn').val() }, //DATA SHOULD ALWAYS BE AN OBJECT
+            data: { quote_to_add: $('#newQuoteIn').val(), author_to_add: $('#newAuthorIn').val() }, //DATA SHOULD ALWAYS BE AN OBJECT
             success: function (response) {
                 console.log('new quote post response: ', response);
                 $.ajax({
@@ -57,7 +55,7 @@ function getAllQuotes() {
         success: function (response) {
             console.log('All the quotes: ', response)
             for (var i = 0; i < response.length; i++) {
-                $('ul').append('<li>' + response[i].quote + '</li>')
+                $('ul').append('<li> "' + response[i].quote + '" -' + response[i].author + '</li>')
             }
             
         }
@@ -70,21 +68,10 @@ function getNewQuote(){
         method: 'GET',
         url: '/quote/all',
         success: function (response){
-            $('ul').append('<li>' + response[response.length-1].quote + '</li>')
+            $('ul').append('<li> "'+ response[response.length-1].quote + '" -' + response[response.length-1].author + '</li>');
+            $('#newQuoteIn').val(''); 
+            $('#newAuthorIn').val('');
         }
     })
 
 }
-
-// function postNewQuote(){
-//     $('#newQuoteIn').val()
-// }
-
-// $.ajax({
-//     method: 'GET',
-//     url: '/',
-//     success: function (response) {
-//         console.log('random quote response ' + response);
-//         $('p').append(response);
-//     }
-// });
